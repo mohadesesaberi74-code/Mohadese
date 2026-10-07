@@ -8,8 +8,10 @@ import Specials from './components/Specials.jsx'
 import Recipes from './components/Recipes.jsx'
 import InstaGrid from './components/InstaGrid.jsx'
 import Footer from './components/Footer.jsx'
+import useReveal from './hooks/useReveal.js'
 
 export default function App() {
+  useReveal()
   return (
     <>
       <Header />
