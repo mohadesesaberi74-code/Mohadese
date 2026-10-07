@@ -8,6 +8,9 @@ services:
       - ./:/app
       - node_modules:/app/node_modules
       - next_build:/app/.next
+      - dbdata:/app/data
+    env_file:
+      - /run/base44/app.env
     environment:
       - BASE44_PREVIEW_MODE=${BASE44_PREVIEW_MODE:-}
       - BASE44_PUBLIC_HOST_SUFFIX=${BASE44_PUBLIC_HOST_SUFFIX:-}
@@ -26,3 +29,4 @@ services:
 volumes:
   node_modules:
   next_build:
+  dbdata:

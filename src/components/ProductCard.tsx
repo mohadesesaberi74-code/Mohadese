@@ -91,17 +91,20 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
           <button
             onClick={() => addToCart(product, weight.value, weight.label, weight.price)}
-            className="w-9 h-9 rounded-arch bg-emerald text-parchment flex items-center justify-center hover:bg-emerald-dark transition-colors shrink-0"
-            aria-label="افزودن به سبد"
+            disabled={!product.inStock}
+            className="w-9 h-9 rounded-arch bg-emerald text-parchment flex items-center justify-center hover:bg-emerald-dark transition-colors shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
+            aria-label={product.inStock ? 'افزودن به سبد' : 'ناموجود'}
           >
             <PlusIcon size={18} />
           </button>
         </div>
 
         {/* Stock */}
-        {!product.inStock && (
-          <span className="text-xs text-clay mt-1">ناموجود</span>
-        )}
+        {product.stockStatus === 'low' ? (
+          <span className="text-xs text-amber-600 mt-1">🟡 موجودی محدود</span>
+        ) : !product.inStock ? (
+          <span className="text-xs text-clay mt-1">🔴 ناموجود</span>
+        ) : null}
       </div>
     </div>
   );

@@ -8,16 +8,20 @@ import StorySection from '@/components/StorySection';
 import FoodInspiration from '@/components/FoodInspiration';
 import EducationalSection from '@/components/EducationalSection';
 import RecipeSection from '@/components/RecipeSection';
-import { getBestSellers, getNewArrivals, getProductsByCategory, getFeatured } from '@/data/products';
+import { getBestSellers, getNewArrivals, getProductsByCategory, getFeatured } from '@/db/queries';
 
-export default function HomePage() {
-  const bestSellers = getBestSellers();
-  const newArrivals = getNewArrivals();
-  const blendedSpices = getProductsByCategory('blended-spices');
-  const driedHerbs = getProductsByCategory('dried-herbs');
-  const sooqh = getProductsByCategory('sooqh');
-  const teas = getProductsByCategory('tea-infusions');
-  const featured = getFeatured();
+export const dynamic = 'force-dynamic';
+
+export default async function HomePage() {
+  const [bestSellers, newArrivals, blendedSpices, driedHerbs, sooqh, teas, featured] = await Promise.all([
+    getBestSellers(),
+    getNewArrivals(),
+    getProductsByCategory('blended-spices'),
+    getProductsByCategory('dried-herbs'),
+    getProductsByCategory('sooqh'),
+    getProductsByCategory('tea-infusions'),
+    getFeatured(),
+  ]);
 
   return (
     <>

@@ -3,8 +3,8 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProductCard from '@/components/ProductCard';
-import { products } from '@/data/products';
 import { categories } from '@/data/categories';
+import type { Product } from '@/data/products';
 import { SearchIcon } from '@/components/Icons';
 
 const sortOptions = [
@@ -24,6 +24,16 @@ export default function ShopPage() {
   const [sortBy, setSortBy] = useState(initialSort);
   const [inStockOnly, setInStockOnly] = useState(false);
   const [priceRange, setPriceRange] = useState<'all' | 'low' | 'mid' | 'high'>('all');
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/products')
+      .then((r) => r.json())
+      .then((d) => setProducts(d.products || []))
+      .catch(() => setProducts([]))
+      .finally(() => setLoading(false));
+  }, []);
 
   useEffect(() => {
     setQuery(searchParams.get('q') || '');
@@ -156,10 +166,12 @@ export default function ShopPage() {
         </div>
 
         {/* Results count */}
-        <p className="text-sm text-charcoal/60 mb-4">{filtered.length.toLocaleString('fa-IR')} محصول یافت شد</p>
+        <p className="text-sm text-charcoal/60 mb-4">
+          {loading ? 'در حال بارگذاری محصولات...' : `${filtered.length.toLocaleString('fa-IR')} محصول یافت شد`}
+        </p>
 
         {/* Products grid */}
-        {filtered.length === 0 ? (
+        {!loading && filtered.length === 0 ? (
           <div className="text-center py-16">
             <p className="text-charcoal/50 mb-2">محصولی یافت نشد</p>
             <p className="text-sm text-charcoal/40">جستجوی خود را تغییر دهید یا فیلترها را تنظیم کنید</p>

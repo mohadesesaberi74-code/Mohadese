@@ -9,6 +9,9 @@ const provinces = ['تهران', 'اصفهان', 'فارس', 'خراسان رض�
 export default function CheckoutPage() {
   const { items, cartTotal, clearCart } = useCart();
   const [submitted, setSubmitted] = useState(false);
+  const [orderNumber, setOrderNumber] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [orderError, setOrderError] = useState('');
   const [form, setForm] = useState({
     name: '', phone: '', province: '', city: '', address: '', postalCode: '', notes: '',
   });
@@ -16,11 +19,39 @@ export default function CheckoutPage() {
   const shippingCost = cartTotal >= 500000 ? 0 : 45000;
   const grandTotal = cartTotal + shippingCost;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    clearCart();
-    window.scrollTo(0, 0);
+    setSubmitting(true);
+    setOrderError('');
+    try {
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          province: form.province,
+          city: form.city,
+          address: form.address,
+          postalCode: form.postalCode,
+          notes: form.notes,
+          items: items.map((i) => ({ productId: i.product.id, weight: i.weight, quantity: i.quantity })),
+        }),
+      });
+      const data = await res.json().catch(() => ({ ok: false, error: 'خطا در ثبت سفارش' }));
+      if (data.ok) {
+        setOrderNumber(data.order.orderNumber);
+        setSubmitted(true);
+        clearCart();
+        window.scrollTo(0, 0);
+      } else {
+        setOrderError(data.error || 'خطا در ثبت سفارش. لطفاً دوباره تلاش کنید.');
+      }
+    } catch {
+      setOrderError('خطا در ارتباط با سرور. لطفاً دوباره تلاش کنید.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -32,7 +63,7 @@ export default function CheckoutPage() {
           </div>
           <h1 className="text-2xl font-bold text-charcoal mb-3">سفارش شما ثبت شد!</h1>
           <p className="text-sm text-charcoal/60 mb-2">به‌زودی با شما تماس می‌گیریم تا جزئیات ارسال و پرداخت را هماهنگ کنیم.</p>
-          <p className="text-xs text-charcoal/40 mb-6">کد پیگیری: NB-{Math.floor(Math.random() * 100000).toLocaleString('fa-IR')}</p>
+          <p className="text-xs text-charcoal/40 mb-6">کد پیگیری: {orderNumber}</p>
           <a href="/" className="btn-primary px-7 py-3 rounded-full text-sm font-semibold inline-block">بازگشت به خانه</a>
         </div>
       </div>
@@ -189,8 +220,9 @@ export default function CheckoutPage() {
                   <span className="text-lg font-bold text-emerald">{formatPrice(grandTotal)} <span className="text-xs font-normal">تومان</span></span>
                 </div>
               </div>
-              <button type="submit" className="w-full btn-primary py-3.5 rounded-full text-sm font-bold mt-5">
-                ثبت نهایی سفارش
+              {orderError && <p className="text-xs text-clay mb-3">{orderError}</p>}
+              <button type="submit" disabled={submitting} className="w-full btn-primary py-3.5 rounded-full text-sm font-bold mt-5 disabled:opacity-60">
+                {submitting ? 'در حال ثبت...' : 'ثبت نهایی سفارش'}
               </button>
             </div>
           </div>

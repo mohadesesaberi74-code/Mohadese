@@ -1,12 +1,20 @@
 import { recipes } from '@/data/content';
-import { getProductBySlug } from '@/data/products';
+import { getProductBySlug } from '@/db/queries';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ClockIcon, FlowerIcon } from '@/components/Icons';
 
-export default function RecipeDetailPage({ params }: { params: { id: string } }) {
+export const dynamic = 'force-dynamic';
+
+export default async function RecipeDetailPage({ params }: { params: { id: string } }) {
   const recipe = recipes.find((r) => r.id === params.id);
   if (!recipe) notFound();
+
+  const recommended = (
+    await Promise.all(
+      recipe.recommendedProducts.map(async (slug) => ({ slug, product: await getProductBySlug(slug) }))
+    )
+  ).filter((r) => r.product);
 
   return (
     <div className="min-h-screen bg-parchment">
@@ -46,14 +54,11 @@ export default function RecipeDetailPage({ params }: { params: { id: string } })
               <div className="mt-4 pt-4 border-t border-stone/50">
                 <h3 className="text-sm font-bold text-charcoal mb-2">محصولات پیشنهادی نوبرانه</h3>
                 <div className="flex flex-wrap gap-2">
-                  {recipe.recommendedProducts.map((slug) => {
-                    const p = getProductBySlug(slug);
-                    return p ? (
-                      <Link key={slug} href={`/products/${slug}`} className="text-xs bg-emerald/8 text-emerald px-3 py-1.5 rounded-full hover:bg-emerald hover:text-parchment transition-colors">
-                        {p.name}
-                      </Link>
-                    ) : null;
-                  })}
+                  {recommended.map(({ slug, product }) => (
+                    <Link key={slug} href={`/products/${slug}`} className="text-xs bg-emerald/8 text-emerald px-3 py-1.5 rounded-full hover:bg-emerald hover:text-parchment transition-colors">
+                      {product!.name}
+                    </Link>
+                  ))}
                 </div>
               </div>
             </div>

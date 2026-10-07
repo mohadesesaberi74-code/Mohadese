@@ -1,11 +1,18 @@
-'use client';
-
 import Link from 'next/link';
 import { recipes } from '@/data/content';
-import { getProductBySlug } from '@/data/products';
+import { getProductBySlug } from '@/db/queries';
 import { FlowerIcon, ClockIcon, ChevronLeft } from './Icons';
 
-export default function RecipeSection() {
+export default async function RecipeSection() {
+  const cards = await Promise.all(
+    recipes.map(async (recipe) => ({
+      recipe,
+      recommended: (await Promise.all(recipe.recommendedProducts.map((slug) => getProductBySlug(slug)))).filter(
+        (p): p is NonNullable<typeof p> => !!p
+      ),
+    }))
+  );
+
   return (
     <section className="py-12 md:py-16 bg-parchment">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
@@ -20,7 +27,7 @@ export default function RecipeSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
-          {recipes.map((recipe) => (
+          {cards.map(({ recipe, recommended }) => (
             <div key={recipe.id} className="group bg-parchment rounded-arch-lg overflow-hidden border border-stone/50 card-lift hover:shadow-card-hover">
               <div className="relative aspect-[16/10] overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -36,16 +43,15 @@ export default function RecipeSection() {
                   <span className="text-xs text-charcoal/50">مواد لازم: </span>
                   <span className="text-xs text-charcoal/70">{recipe.ingredients.join('، ')}</span>
                 </div>
-                <div className="flex flex-wrap gap-1.5 mb-3">
-                  {recipe.recommendedProducts.map((slug) => {
-                    const p = getProductBySlug(slug);
-                    return p ? (
-                      <Link key={slug} href={`/products/${slug}`} className="text-[10px] bg-emerald/8 text-emerald px-2 py-1 rounded-full hover:bg-emerald hover:text-parchment transition-colors">
+                {recommended.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 mb-3">
+                    {recommended.map((p) => (
+                      <Link key={p.slug} href={`/products/${p.slug}`} className="text-[10px] bg-emerald/8 text-emerald px-2 py-1 rounded-full hover:bg-emerald hover:text-parchment transition-colors">
                         {p.name}
                       </Link>
-                    ) : null;
-                  })}
-                </div>
+                    ))}
+                  </div>
+                )}
                 <p className="text-xs text-charcoal/60 line-clamp-2 mb-3 leading-relaxed">
                   {recipe.instructions[0]}...
                 </p>

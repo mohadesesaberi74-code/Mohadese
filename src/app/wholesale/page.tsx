@@ -8,7 +8,35 @@ const productTypes = ['ادویه‌های تک', 'ادویه‌های ترکی�
 
 export default function WholesalePage() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [form, setForm] = useState({ name: '', business: '', phone: '', productType: '', volume: '', notes: '' });
+
+  const handleWholesaleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setSubmitError('');
+    try {
+      const res = await fetch('/api/wholesale', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          product: form.productType,
+          quantity: form.volume,
+          notes: [form.business ? `کسب‌وکار: ${form.business}` : '', form.notes].filter(Boolean).join(' — '),
+        }),
+      });
+      const data = await res.json().catch(() => ({ ok: false }));
+      if (data.ok) setSubmitted(true);
+      else setSubmitError(data.error || 'خطا در ثبت درخواست. لطفاً دوباره تلاش کنید.');
+    } catch {
+      setSubmitError('خطا در ارتباط با سرور. لطفاً دوباره تلاش کنید.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-parchment">
@@ -56,7 +84,7 @@ export default function WholesalePage() {
               </div>
             ) : (
               <form
-                onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}
+                onSubmit={handleWholesaleSubmit}
                 className="bg-parchment rounded-arch-lg border border-stone/50 p-5 space-y-4"
               >
                 <h2 className="text-base font-bold text-charcoal">فرم ثبت سفارش عمده</h2>
@@ -93,7 +121,10 @@ export default function WholesalePage() {
                   onChange={(e) => setForm({ ...form, notes: e.target.value })}
                   className="w-full bg-parchment border border-stone rounded-arch px-4 py-2.5 text-sm focus:border-emerald focus:outline-none resize-none"
                 />
-                <button type="submit" className="w-full btn-primary py-3.5 rounded-full text-sm font-bold">ثبت سفارش عمده</button>
+                {submitError && <p className="text-xs text-clay">{submitError}</p>}
+                <button type="submit" disabled={submitting} className="w-full btn-primary py-3.5 rounded-full text-sm font-bold disabled:opacity-60">
+                  {submitting ? 'در حال ثبت...' : 'ثبت سفارش عمده'}
+                </button>
               </form>
             )}
           </div>

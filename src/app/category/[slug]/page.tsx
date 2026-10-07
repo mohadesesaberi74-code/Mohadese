@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import ProductCard from '@/components/ProductCard';
 import { categories } from '@/data/categories';
-import { getProductsByCategory } from '@/data/products';
+import type { Product } from '@/data/products';
 
 const sortOptions = [
   { value: 'popular', label: 'محبوب‌ترین' },
@@ -15,8 +15,16 @@ const sortOptions = [
 export default function CategoryPage({ params }: { params: { slug: string } }) {
   const category = categories.find((c) => c.slug === params.slug);
   const [sortBy, setSortBy] = useState('popular');
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  let products = getProductsByCategory(params.slug);
+  useEffect(() => {
+    fetch(`/api/products?category=${params.slug}`)
+      .then((r) => r.json())
+      .then((d) => setProducts(d.products || []))
+      .catch(() => setProducts([]))
+      .finally(() => setLoading(false));
+  }, [params.slug]);
 
   const sorted = useMemo(() => {
     const result = [...products];
@@ -86,7 +94,9 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
           </select>
         </div>
 
-        {sorted.length === 0 ? (
+        {loading ? (
+          <p className="text-sm text-charcoal/40 py-16 text-center">در حال بارگذاری محصولات...</p>
+        ) : sorted.length === 0 ? (
           <div className="text-center py-16">
             <p className="text-charcoal/50">به‌زودی محصولات این دسته اضافه می‌شوند</p>
           </div>
