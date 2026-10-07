@@ -1,0 +1,22 @@
+# Base44 development environment — نوبرانه (frontend-only Vite app)
+# Runs the app from the cloned source with live reload; no prebuilt images.
+services:
+  web:
+    image: node:22-alpine
+    working_dir: /app
+    restart: on-failure
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    environment:
+      - BASE44_PREVIEW_MODE
+      - __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS
+    command: >
+      sh -ec "npm install --no-audit --no-fund && exec npm run dev"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/ >/dev/null 2>&1 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 90s
