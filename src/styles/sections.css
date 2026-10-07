@@ -1,0 +1,603 @@
+/* ===== Categories ===== */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.category-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-card);
+}
+
+.category-photo {
+  overflow: hidden;
+}
+
+.category-photo img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.category-card:hover .category-photo img {
+  transform: scale(1.07);
+}
+
+.category-card h3 {
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--forest-900);
+  padding: 18px 14px 20px;
+}
+
+/* ===== Featured products ===== */
+.featured {
+  background: var(--cream-soft);
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.product-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-card);
+}
+
+.product-photo {
+  overflow: hidden;
+}
+
+.product-photo img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.product-card:hover .product-photo img {
+  transform: scale(1.06);
+}
+
+.product-body {
+  padding: 20px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.product-body h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--forest-900);
+}
+
+.product-desc {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.8;
+  flex: 1;
+}
+
+.product-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.btn-cart {
+  background: var(--forest-900);
+  color: var(--cream);
+  padding: 11px 22px;
+  font-size: 0.9rem;
+  border-radius: var(--radius-sm);
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-cart:hover {
+  background: var(--forest-700);
+}
+
+.btn-cart svg {
+  width: 17px;
+  height: 17px;
+}
+
+.wishlist-btn {
+  position: absolute;
+  top: 14px;
+  inset-inline-start: 14px;
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(250, 245, 236, 0.92);
+  color: var(--brown);
+  box-shadow: 0 4px 14px rgba(20, 41, 28, 0.18);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.wishlist-btn:hover {
+  transform: scale(1.08);
+}
+
+.wishlist-btn.liked {
+  color: var(--barberry);
+}
+
+.wishlist-btn svg {
+  width: 19px;
+  height: 19px;
+}
+
+/* ===== Brand story ===== */
+.story-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  align-items: center;
+  gap: 56px;
+}
+
+.story-copy {
+  max-width: 520px;
+}
+
+.story-copy h2 {
+  font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+  font-weight: 800;
+  color: var(--forest-900);
+  margin-bottom: 16px;
+}
+
+.story-copy p {
+  color: var(--text);
+  margin-bottom: 30px;
+}
+
+.story-media {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  order: 2;
+}
+
+.story-media img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.story-media:hover img {
+  transform: scale(1.05);
+}
+
+@media (min-width: 901px) {
+  /* در RTL ستون اول سمت راست است؛ تصویر در سمت چپ قرار می‌گیرد */
+  .story-copy { grid-column: 2; }
+  .story-media { grid-column: 1; grid-row: 1; order: 0; }
+}
+
+/* ===== Why us ===== */
+.why {
+  background:
+    radial-gradient(800px 400px at 85% 0%, rgba(217, 166, 72, 0.1), transparent 60%),
+    linear-gradient(150deg, var(--forest-950), var(--forest-800));
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.feature-card {
+  background: rgba(250, 245, 236, 0.05);
+  border: 1px solid rgba(250, 245, 236, 0.12);
+  border-radius: var(--radius-lg);
+  padding: 30px 24px;
+  text-align: center;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.feature-card:hover {
+  background: rgba(250, 245, 236, 0.09);
+  transform: translateY(-4px);
+}
+
+.feature-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  font-size: 1.55rem;
+  border-radius: 50%;
+  background: rgba(217, 166, 72, 0.14);
+  border: 1px solid rgba(217, 166, 72, 0.3);
+  margin-bottom: 16px;
+}
+
+.feature-card h3 {
+  color: var(--cream);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.feature-card p {
+  color: rgba(250, 245, 236, 0.66);
+  font-size: 0.88rem;
+}
+
+/* ===== Specials ===== */
+.specials {
+  background: linear-gradient(180deg, var(--cream), var(--cream-soft));
+}
+
+.special-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+}
+
+.special-card {
+  background: var(--forest-900);
+  color: var(--cream);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(217, 166, 72, 0.25);
+}
+
+.special-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(14, 33, 21, 0.35);
+}
+
+.special-photo {
+  overflow: hidden;
+}
+
+.special-photo img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.special-card:hover .special-photo img {
+  transform: scale(1.07);
+}
+
+.special-body {
+  padding: 24px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.special-body h3 {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.special-body p {
+  color: rgba(250, 245, 236, 0.7);
+  font-size: 0.9rem;
+  flex: 1;
+}
+
+.special-body .product-weight {
+  background: rgba(250, 245, 236, 0.08);
+  border-color: rgba(250, 245, 236, 0.16);
+  color: rgba(250, 245, 236, 0.75);
+}
+
+.special-body .product-price {
+  color: var(--gold);
+}
+
+/* ===== Recipes ===== */
+.recipes {
+  background: var(--cream-soft);
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.recipe-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.recipe-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-card);
+}
+
+.recipe-photo {
+  overflow: hidden;
+}
+
+.recipe-photo img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.recipe-card:hover .recipe-photo img {
+  transform: scale(1.06);
+}
+
+.recipe-body {
+  padding: 22px 24px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.recipe-body h3 {
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: var(--forest-900);
+}
+
+.recipe-body p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  flex: 1;
+}
+
+.link-more {
+  color: var(--copper-deep);
+  font-weight: 700;
+  font-size: 0.92rem;
+  transition: color 0.2s ease;
+}
+
+.link-more:hover {
+  color: var(--barberry);
+}
+
+/* ===== Instagram ===== */
+.insta-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  margin-bottom: 44px;
+}
+
+.insta-item {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+
+.insta-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.insta-item:hover img {
+  transform: scale(1.08);
+}
+
+.insta-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(14, 33, 21, 0);
+  color: var(--cream);
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.3s ease;
+}
+
+.insta-overlay svg {
+  width: 26px;
+  height: 26px;
+}
+
+.insta-item:hover .insta-overlay {
+  opacity: 1;
+  background: rgba(14, 33, 21, 0.45);
+}
+
+/* ===== Footer ===== */
+.site-footer {
+  background:
+    radial-gradient(700px 340px at 90% 0%, rgba(217, 166, 72, 0.08), transparent 60%),
+    var(--forest-950);
+  color: rgba(250, 245, 236, 0.78);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding: 64px 0 48px;
+}
+
+.footer-brand h2 {
+  color: var(--cream);
+  font-size: 1.7rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.footer-slogan {
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+
+.footer-social {
+  display: flex;
+  gap: 10px;
+}
+
+.social-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(250, 245, 236, 0.18);
+  color: rgba(250, 245, 236, 0.8);
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.social-btn:hover {
+  background: var(--copper);
+  border-color: var(--copper);
+  color: #fff;
+}
+
+.social-btn svg {
+  width: 19px;
+  height: 19px;
+}
+
+.footer-col h3 {
+  color: var(--cream);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.footer-col li {
+  margin-bottom: 10px;
+}
+
+.footer-col a {
+  color: rgba(250, 245, 236, 0.62);
+  font-size: 0.92rem;
+  transition: color 0.2s ease;
+}
+
+.footer-col a:hover {
+  color: var(--gold);
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(250, 245, 236, 0.1);
+  padding: 20px 0;
+  font-size: 0.85rem;
+  color: rgba(250, 245, 236, 0.5);
+}
+
+/* ===== Responsive grids ===== */
+@media (max-width: 1024px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .insta-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .section {
+    padding: 64px 0;
+  }
+
+  .product-grid,
+  .special-grid,
+  .recipe-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .story-grid {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+
+  .story-media {
+    order: 1;
+  }
+
+  .story-media img {
+    height: 300px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .product-grid,
+  .special-grid,
+  .recipe-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .category-photo img {
+    height: 130px;
+  }
+
+  .category-card h3 {
+    padding: 12px 8px 14px;
+    font-size: 0.95rem;
+  }
+
+  .insta-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
